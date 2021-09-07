@@ -1,6 +1,6 @@
 import "@hdmn-diagram/assets/hdmn-diagram.less";
 import { Injector } from "didi";
-import CoreModule from "./core"; // 导入Core模块 当然我肯定不止一个Core模块
+import CoreModule from "./core"; // 导入Core模块 当然我肯定不止一个Core模块 但是模块之间是使用 __extend__ 关联的 所以 不需要统一在这里 import
 
 /**
  * 创建 Injector
@@ -16,7 +16,7 @@ const createInjector = (options) => {
         config: ['value', options]
     }
 
-    // 把所有的模块合在一起（CoreModule和自定义的模块）
+    // 把所有的模块合在一起（ConfigModule、CoreModule和自定义的模块）
     const concatModules = [ConfigModule, CoreModule].concat(options.modules || []);
 
     ///////////////////
