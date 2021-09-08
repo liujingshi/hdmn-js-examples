@@ -1,13 +1,6 @@
 
-const Draw = () => {
-    return {
-        start: () => {
-            alert("I draw!");
-        }
-    }
-}
+import EventBus from "./EventBus";
 
 export default {
-    __init__: ['draw'],
-    draw: ['type', Draw]
+    eventBus: ['type', EventBus]
 }
