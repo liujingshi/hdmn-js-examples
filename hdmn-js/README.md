@@ -1,4 +1,4 @@
-# hdmn-diagram-js
+# hdmn-js
 
 ## 开发中 不单独建立仓库
 

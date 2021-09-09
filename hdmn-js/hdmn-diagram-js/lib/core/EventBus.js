@@ -20,7 +20,7 @@ function EventBus() {
     this._eventQueue = {};
 
     // 订阅销毁的事件 并且是最低优先级 这样本身的销毁会最后执行 别的地方订阅的销毁事件会先执行（除非你设置了和我一样甚至更小的优先级）
-    this.on("diagram.destroy", this._destroy, this, 1);
+    this.on("x6.destroy", this._destroy, this, 1);
 }
 
 /**

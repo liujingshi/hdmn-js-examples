@@ -4,7 +4,7 @@ import CoreModule from "./core"; // 导入Core模块 当然我肯定不止一个
 
 /**
  * 创建 Injector
- * @param {Object} options 
+ * @param {Object} options
  * @returns {didi.Injector}
  */
 const createInjector = (options) => {
@@ -13,8 +13,8 @@ const createInjector = (options) => {
 
     // 配置模块 存储 options 里的配置 然后就在哪都能访问了
     const ConfigModule = {
-        config: ['value', options]
-    }
+        config: ["value", options],
+    };
 
     // 把所有的模块合在一起（ConfigModule、CoreModule和自定义的模块）
     const concatModules = [ConfigModule, CoreModule].concat(options.modules || []);
@@ -27,6 +27,8 @@ const createInjector = (options) => {
     const modules = [];
     // 用于存放所有的 __init__
     const constructors = [];
+    // 用于存放所有的自定义元素
+    const customCells = [];
 
     // 判断 modules 是否已经包含该模块
     const hasModule = (module) => {
@@ -49,10 +51,21 @@ const createInjector = (options) => {
         // 开始递归 __extend__
         (module.__extend__ || []).forEach(visit);
 
-        // 如果成功添加则收集他的 __init__
+        // 如果成功添加则收集他的 __init__ 以及自定义元素
         if (addModule(module)) {
             (module.__init__ || []).forEach((constructor) => {
                 constructors.push(constructor);
+            });
+            (module.customCells || []).forEach((customCell) => {
+                // ["value", [ customCell1, customCell2, ...... ]]
+                // 第一个参数跳过
+                if (customCell === "value") {
+                    return true;
+                }
+                // 第二个参数再遍历
+                customCell.forEach((item) => {
+                    customCells.push(item);
+                });
             });
         }
     };
@@ -78,6 +91,14 @@ const createInjector = (options) => {
         }
     });
 
+    // 添加缺少的自定义元素到 injector
+    const injectorCustomCells = injector.get("customCells");
+    customCells.forEach((customCell) => {
+        if (injectorCustomCells.indexOf(customCell) < 0) {
+            injectorCustomCells.push(customCell);
+        }
+    });
+
     return injector;
 };
 
@@ -96,7 +117,18 @@ const HdmnDiagram = function (options, injector) {
 
     // 我也有invoke
     this.invoke = injector.invoke;
+
+    // 发布 x6.init 事件
+    injector.get("eventBus").emit("x6.init");
+
+    // 注册全部的自定义元素
+    injector.get("customCells").forEach((customCell) => {
+        const customCellInstance = injector.get(customCell.name);
+        customCellInstance.register();
+    });
 };
 
 // 导出 别人 import 之后 new
-export default HdmnDiagram;
+export { HdmnDiagram };
+
+export * from "./model";

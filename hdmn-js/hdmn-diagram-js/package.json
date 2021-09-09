@@ -25,6 +25,7 @@
         "webpack-cli": "4.8.0"
     },
     "dependencies": {
+        "@antv/x6": "1.26.1",
         "didi": "6.0.0",
         "min-dash": "3.8.0"
     }
