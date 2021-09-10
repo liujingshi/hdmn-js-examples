@@ -9,10 +9,11 @@ const main = () => {
         },
     });
 
-    const myCustomNodeInstance = viewer.get("MyCustomNode");
-    myCustomNodeInstance.create("my-custom-node-1", 100, 100);
-    const myNodeInstance = viewer.get("MyNode");
-    myNodeInstance.create("my-node-1", 500, 500);
+    const customSwitchInstance = viewer.get("CustomSwitch");
+    const node1 = customSwitchInstance.create("custom-switch-1", 500, 100);
+    const node2 = customSwitchInstance.create("custom-switch-2", 500, 500);
+    const myCustomEdgeInstance = viewer.get("MyCustomEdge");
+    myCustomEdgeInstance.create("my-custom-edge-1", node1, node2);
 };
 
 export default {

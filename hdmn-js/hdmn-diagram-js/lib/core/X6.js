@@ -34,6 +34,10 @@ X6.prototype._init = function (config, eventBus) {
         this._registerNode(name, nodeConfig);
     });
 
+    eventBus.on("x6.registerEdge", (event, name, edgeConfig) => {
+        this._registerEdge(name, edgeConfig);
+    });
+
     eventBus.on("x6.addNode", (event, node) => {
         return this._addNodeToGraph(node);
     });
@@ -46,6 +50,11 @@ X6.prototype._init = function (config, eventBus) {
 // 注册 Node
 X6.prototype._registerNode = function (name, nodeConfig) {
     Graph.registerNode(name, nodeConfig);
+};
+
+// 注册 Edge
+X6.prototype._registerEdge = function (name, edgeConfig) {
+    Graph.registerEdge(name, edgeConfig);
 };
 
 // 添加 Node 到 Graph
